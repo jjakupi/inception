@@ -1,0 +1,15 @@
+What is /var/lib/apt/lists/?
+
+When you run:apt-get update
+👉 Debian downloads package lists (indexes) and stores them here:
+/var/lib/apt/lists/
+These files are:
+- NOT needed after installation
+- Only used during install
+ Without removing them
+
+Your image will:- Be bigger,Contain useless files
+---
+mysql   = tool you use to talk to the database
+mysqld  = the database running in the background
+CMD ["mysqld"]:“When container starts → run the database server”
