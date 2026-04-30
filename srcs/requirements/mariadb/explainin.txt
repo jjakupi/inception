@@ -13,3 +13,7 @@ Your image will:- Be bigger,Contain useless files
 mysql   = tool you use to talk to the database
 mysqld  = the database running in the background
 CMD ["mysqld"]:“When container starts → run the database server”
+
+If MariaDB uses 127.0.0.1
+This means:listen only inside the same container
+bind-address = 0.0.0.0->listen on all network interfaces inside the container

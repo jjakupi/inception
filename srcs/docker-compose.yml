@@ -8,10 +8,27 @@ services:
     restart: always
     volumes:
       - mariadb_data:/var/lib/mysql
-  
+    networks:
+      - inception
+
+  wordpress:
+    build: ./requirements/wordpress
+    image: wordpress
+    container_name: wordpress
+    env_file:
+      - .env
+    restart: always
+    depends_on:
+      - mariadb
+    networks:
+      - inception
+
 volumes:
   mariadb_data:
-    driver_opts: #forces docker to store data on host machine
-      type: none # just use a normal folder
-      o: bind #“bind (link) container folder to a host folder”
-      device: /home/jjakupi/data/mariadb #“This is the real folder on my machine”
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/jjakupi/data/mariadb
+
+networks:
+  inception:
