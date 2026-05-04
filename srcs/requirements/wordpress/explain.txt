@@ -1,4 +1,21 @@
 Why /var/www/html:This is the classic Linux folder where website files are stored.
+It contains the whole WordPress application.
+
+index.php:
+This is the main entry file.
+When someone visits the website, WordPress starts from here.
+
+wp-config.php:
+It contains the database connection info:
+database name
+database user
+database password
+database host = mariadb
+Without this file, WordPress cannot connect to MariaDB.
+
+wp-content:
+This is one of the most important folders for persistence.
+
 NGINX receives request
 NGINX sees .php file
 NGINX sends it to PHP-FPM
@@ -30,3 +47,7 @@ WP-CLI:WordPress Command Line Interface,It is a command-line tool to control Wor
 So WordPress can reach it with the hostname:mariadb
 Not localhost.Why not localhost:
 Because WordPress and MariaDB are in different containers.
+
+www-data is a Linux user account created for web services.It is a system user.
+Because web servers should not run as root.
+If NGINX or PHP-FPM ran as root, and someone found a security bug in your website, they could potentially control the whole system.

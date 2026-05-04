@@ -19,10 +19,9 @@ sleep 5
 echo "Creating database and user..."
 
  #-u = user -e execute
-mysql -u root -e "CREATE DATABASE $MYSQL_DATABASE;"
+mysql -u root -e "CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE;"
 
-mysql -u root -e "CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
-
+mysql -u root -e "CREATE USER IF NOT EXISTS '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
 mysql -u root -e "GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%';"
 
 mysql -u root -e "FLUSH PRIVILEGES;"
@@ -34,4 +33,5 @@ echo "Setup done!"
 mysqladmin -u root shutdown
 
 # Start MariaDB normally
-mysqld
+exec mysqld --user=mysql
+

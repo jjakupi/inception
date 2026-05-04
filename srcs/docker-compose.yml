@@ -20,6 +20,8 @@ services:
     restart: always
     depends_on:
       - mariadb
+    volumes:
+      - wordpress_data:/var/www/html
     networks:
       - inception
 
@@ -29,6 +31,12 @@ volumes:
       type: none
       o: bind
       device: /home/jjakupi/data/mariadb
+
+  wordpress_data:
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/jjakupi/data/wordpress
 
 networks:
   inception:
