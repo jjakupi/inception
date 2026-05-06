@@ -220,3 +220,36 @@ mariadb/   = database files
 wordpress/ = website files
 
 Even if containers are deleted, data stays there.
+
+ADD është si COPY, por më special.
+
+Mund të bëjë gjëra ekstra:
+
+- mund të ekstraktojë tar files
+- mund të përdorë URL\
+
+Shell form
+CMD echo "Hello $name"
+ose:
+ENTRYPOINT echo "Hello $name"
+Kjo kalon përmes shell-it:
+/bin/sh -c
+Pra shell-i e interpreton $name.
+Nëse ke environment variable:
+name=Jetmir
+mund të dalë:
+Hello Jetmir
+Exec form
+CMD ["echo", "Hello $name"]
+Kjo nuk kalon përmes shell-it.
+Pra $name nuk zëvendësohet.
+Del:
+Hello $name
+jo:
+Hello Jetmir
+Pse zakonisht përdorim exec form?
+Sepse është më e pastër për Docker:
+ENTRYPOINT ["/usr/local/bin/init_wordpress.sh"]
+
+ENTRYPOINT ["/usr/local/bin/init_wordpress.sh"]:
+Do të thotë:Kur container-i starton, gjithmonë ekzekuto këtë script

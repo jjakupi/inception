@@ -1,0 +1,26 @@
+OpenSSL is a cryptography toolkit implementing the Secure Sockets Layer (SSL) and Transport Layer Security (TLS) network protocols
+and related cryptography standards required by them
+
+Why RSA?
+Because:
+- simple
+- widely supported
+- works with NGINX easily
+- common in Inception projects
+- fewer compatibility problems
+EC/ECDSA also works, but it is more advanced and not necessary
+
+req means certificate request.
+
+Normally, in the real world, you create a certificate request and send it to a Certificate Authority.
+But here we use it with -x509, so it creates a self-signed certificate directly.
+req = work with certificate requests
+req -x509 = create self-signed certificate directly
+
+-x509:
+Create a certificate, not only a request.
+X.509 is the standard format for TLS/SSL certificates.
+
+-nodes
+no DES encryption
+Do not protect the private key with a password.

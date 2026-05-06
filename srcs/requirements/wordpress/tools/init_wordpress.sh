@@ -80,9 +80,8 @@ fi
 mkdir -p /run/php #Creates runtime folder for PHP-FPM.
 #change owner recursive, apply to folder and everything inside
 chown -R www-data:www-data /run/php
+#The first www-data is the user.The second www-data is the group.
 #www-data = user that needs to use /run/phpm
-#user = www-data
-#group = www-data
 #On Debian, web services like NGINX/PHP-FPM often use the user:www-data
 #So this gives PHP-FPM permission to use /run/php.
 exec php-fpm7.4 -F #exec php-fpm7.4 -F This starts PHP-FPM
