@@ -24,3 +24,45 @@ X.509 is the standard format for TLS/SSL certificates.
 -nodes
 no DES encryption
 Do not protect the private key with a password.
+
+conf explained:
+this server block is for the domain jjakupi.42.fr në HTTPS,
+use this rules.
+
+ Browser connects to NGINX to port 443.
+
+listen 443 ssl:
+Listen to port 443 and use SSL/TLS.
+HTTP  → port 80
+HTTPS → port 443
+
+thats the reason why in docker-compose
+i will have only for nginx ports 443:443
+and not for wordpress and mariadb
+
+Website files are in /var/www/html.
+
+'location' / means for every requests thats starts with / like /about /contact
+try_files $uri $uri/ /index.php?$args;
+
+try_files $uri $uri/ /index.php?$args;
+Do të thotë:
+
+1. Provo të gjesh file-in që kërkoi user-i.
+2. Nëse nuk ekziston, provo si folder.
+3. Nëse as ai nuk ekziston, dërgo request-in te index.php.
+Atëherë NGINX e dërgon te:/index.php
+dhe WordPress vendos çfarë faqeje të shfaqë.
+
+location ~ \.php$ means anything that ends with .php like:
+index.php, wp-login.php ...
+
+include snippets/fastcgi-php.conf:
+Its a ready config file thats comes with NGINX in Debian.
+and tells nginx how to send the PHP file to PHP-FPM
+FastCGI?
+FastCGI is a protokoll that NGINX uses to talk to PHP-FPM.
+
+fastcgi_pass wordpress:9000:  tells the nginx to
+Send the PHP request to the wordpress host in port 9000
+
