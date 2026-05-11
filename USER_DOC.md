@@ -31,59 +31,61 @@ Stopping the project removes the running containers, but the persistent data rem
 
 ---
 
-## Accessing the website
+## 🌐 Accessing the Website
 
-Before accessing the website, the domain name must point to the local machine.
+### Local domain setup
 
-Edit the `/etc/hosts` file on the host machine:
+The project uses the domain:
 
-sudo nano /etc/hosts
+> `jjakupi.42.fr`
 
-Add the following line:
+Before opening the website, the host machine must know where this domain points.
 
-127.0.0.1 jjakupi.42.fr
+| Step | Command / Value |
+|---|---|
+| Open hosts file | `sudo nano /etc/hosts` |
+| Add domain entry | `127.0.0.1 jjakupi.42.fr` |
 
-If the project runs inside a virtual machine, use the VM IP address instead of 127.0.0.1.
+If the project runs inside a virtual machine, replace `127.0.0.1` with the VM IP address.
 
-The website is available at:
+Example:
 
-https://jjakupi.42.fr
+```text
+192.168.56.10 jjakupi.42.fr
+Website URL
 
-The TLS certificate is self-signed, so the browser may display a security warning. This is expected for this local setup.
+🔗 Main website: https://jjakupi.42.fr
 
-Accessing the WordPress administration panel
+The TLS certificate is self-signed, so the browser may show a warning. This is expected for this local project.
 
-The WordPress administration panel is available at:
+🔐 WordPress Administration
+Page	URL
+Admin panel	https://jjakupi.42.fr/wp-admin
 
-https://jjakupi.42.fr/wp-admin
+Use the WordPress administrator credentials defined in the environment file.
 
-Use the WordPress administrator credentials defined in the environment configuration.
+🔑 Credentials
 
-Credentials
-
-Project credentials are stored in:
+Credentials are stored in:
 
 srcs/.env
 
-This file contains values such as:
+Credential type	Used for
+Domain name	Website URL
+MariaDB database name	WordPress database
+MariaDB username/password	Database connection
+WordPress admin credentials	Admin login
+WordPress regular user credentials	Second WordPress user
 
-the domain name
-the MariaDB database name
-the MariaDB username and password
-the WordPress administrator credentials
-the second WordPress user credentials
+⚠️ Sensitive values should stay local and should not be committed to the repository.
 
-Sensitive values should stay local and should not be committed to the repository.
-
-Checking the services
-
-To check if the containers are running:
-
+✅ Checking the Services
+Running containers
 docker ps
 
 Expected containers:
 
-Container
-nginx
-wordpress
-mariadb
+Container	Purpose
+nginx	HTTPS entry point
+wordpress	Website and PHP-FPM
+mariadb	Database
