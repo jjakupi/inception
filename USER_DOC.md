@@ -34,7 +34,6 @@ Stopping the project removes the running containers, but the persistent data rem
 
 Before opening the website, add the domain to `/etc/hosts` on the host machine:
 
-```text
 127.0.0.1 jjakupi.42.fr
 
 Then open:
