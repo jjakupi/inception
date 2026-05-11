@@ -1,83 +1,66 @@
- User Documentation - Inception
+# User Documentation - Inception
 
-## Project overview
+## Services Provided
 
-This project runs a WordPress website inside a Docker environment.
+This infrastructure provides a complete web hosting stack:
 
-It is composed of three services:
+- **NGINX:** a web server acting as the secure entry point of the website through HTTPS.
+- **WordPress:** the content management system used to manage the website.
+- **MariaDB:** the database engine that stores the WordPress data.
 
-- **NGINX**: handles HTTPS connections and acts as the only entry point to the website.
-- **WordPress**: provides the website and the administration interface.
-- **MariaDB**: stores the WordPress data, such as users, posts, pages and settings.
+The request flow is:
 
-The services communicate in this order:
-
-```text
 Browser -> NGINX -> WordPress -> MariaDB
 
-Only the NGINX service is accessible from outside the Docker network.
+Only NGINX is accessible from outside the Docker network.
 
-Starting and stopping the project
+How to start and stop the project
 
-The project is managed with the Makefile located at the root of the repository.
+The project is handled with a Makefile located at the root of the repository.
 
-To start the project, run:
-
+To start the project, open your terminal and run:
 make
-
 To stop the project, run:
-
 make down
 
-Stopping the project removes the running containers, but the persistent data remains stored in the volumes.
+Stopping the project removes the containers, but the persistent data remains stored in the volumes.
 
-Accessing the website
+Accessing the website and admin panel
+Prerequisites
 
-Before accessing the website, the domain name must point to the local machine.
+Before accessing the website, the local machine must recognize the domain name.
 
-Edit the /etc/hosts file:
-
-sudo nano /etc/hosts
-
-Add the following line:
+Add the following line to /etc/hosts:
 
 127.0.0.1 jjakupi.42.fr
 
-If the project runs inside a virtual machine, use the VM IP address instead of 127.0.0.1.
+If the project is running inside a virtual machine, replace 127.0.0.1 with the IP address of the VM.
 
-The website can then be opened at:
+URLs
+Main website: https://jjakupi.42.fr
+WordPress admin panel: https://jjakupi.42.fr/wp-admin
 
-https://jjakupi.42.fr
+The TLS certificate is self-signed, so the browser may show a security warning. This is normal for this project.
 
-The TLS certificate is self-signed, so the browser may display a security warning. This is expected for this local setup.
+Managing credentials
 
-Accessing the WordPress administration panel
-
-The WordPress administration panel is available at:
-
-https://jjakupi.42.fr/wp-admin
-
-Use the WordPress administrator credentials defined in the environment configuration.
-
-Credentials
-
-The project credentials are stored in:
+All credentials and configuration values are stored in:
 
 srcs/.env
 
-This file contains the configuration values used by the services, including:
+This file contains values such as:
 
 the domain name
 the MariaDB database name
 the MariaDB username and password
-the WordPress administrator credentials
+the WordPress administrator username and password
 the second WordPress user credentials
 
-Sensitive values should stay local and should not be committed to the repository.
+For security reasons, real passwords should not be hardcoded inside Dockerfiles or committed to Git.
 
-Checking the services
+Checking service status
 
-To check if the containers are running, use:
+To verify that all services are running correctly, use:
 
 docker ps
 
@@ -86,3 +69,33 @@ The expected containers are:
 nginx
 wordpress
 mariadb
+
+To check service logs:
+
+docker logs nginx
+docker logs wordpress
+docker logs mariadb
+
+To test the website from the terminal:
+
+curl -k https://jjakupi.42.fr
+
+The -k option is used because the certificate is self-signed.
+
+Persistent data
+
+The project stores persistent data on the host machine under:
+
+/home/jjakupi/data
+
+MariaDB data is stored in:
+
+/home/jjakupi/data/mariadb
+
+WordPress files are stored in:
+
+/home/jjakupi/data/wordpress
+
+This allows the website data to remain available even after stopping the project with:
+
+make down
