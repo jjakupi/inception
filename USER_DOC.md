@@ -30,46 +30,70 @@ The project is managed with the `Makefile` located at the root of the repository
 Stopping the project removes the running containers, but the persistent data remains stored in the volumes.
 
 ---
+---
+
 ## Website access
 
 Before opening the website, add the domain to `/etc/hosts` on the host machine:
 
+```text
 127.0.0.1 jjakupi.42.fr
+```
 
-Then open:
+Then open one of these URLs:
 
-Page	URL
-Website	https://jjakupi.42.fr
-WordPress admin	https://jjakupi.42.fr/wp-admin
+| Page | URL |
+|---|---|
+| Website | `https://jjakupi.42.fr` |
+| WordPress admin | `https://jjakupi.42.fr/wp-admin` |
 
 The certificate is self-signed, so the browser may show a warning. This is normal for this project.
 
-Credentials
+---
+
+## Credentials
 
 Credentials are stored in:
 
+```text
 srcs/.env
+```
 
-This file contains the MariaDB credentials, the WordPress administrator credentials, the second WordPress user credentials, and the domain name.
+This file contains:
 
-To change credentials, edit the .env file and restart the project:
+| Value | Description |
+|---|---|
+| `DOMAIN_NAME` | Website domain |
+| `MYSQL_DATABASE` | MariaDB database name |
+| `MYSQL_USER` / `MYSQL_PASSWORD` | MariaDB user credentials |
+| `WORDPRESS_ADMIN_USER` / `WORDPRESS_ADMIN_PASSWORD` | WordPress administrator credentials |
+| `WORDPRESS_USER` / `WORDPRESS_USER_PASSWORD` | Second WordPress user credentials |
 
+To change credentials, edit `srcs/.env`, then restart the project:
+
+```bash
 make down
 make
+```
 
 Sensitive values should stay local and should not be committed to Git.
 
-Checking the services
+---
+
+## Checking the services
 
 To check that the project is running:
 
+```bash
 docker ps
+```
 
 You should see these containers:
 
-Container
-nginx
-wordpress
-mariadb
+| Container | Service |
+|---|---|
+| `nginx` | HTTPS entry point |
+| `wordpress` | WordPress and PHP-FPM |
+| `mariadb` | Database |
 
 If all three containers are running, the stack is started correctly.
