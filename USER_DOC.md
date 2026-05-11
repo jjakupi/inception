@@ -30,62 +30,47 @@ The project is managed with the `Makefile` located at the root of the repository
 Stopping the project removes the running containers, but the persistent data remains stored in the volumes.
 
 ---
+## Website access
 
-## 🌐 Accessing the Website
-
-### Local domain setup
-
-The project uses the domain:
-
-> `jjakupi.42.fr`
-
-Before opening the website, the host machine must know where this domain points.
-
-| Step | Command / Value |
-|---|---|
-| Open hosts file | `sudo nano /etc/hosts` |
-| Add domain entry | `127.0.0.1 jjakupi.42.fr` |
-
-If the project runs inside a virtual machine, replace `127.0.0.1` with the VM IP address.
-
-Example:
+Before opening the website, add the domain to `/etc/hosts` on the host machine:
 
 ```text
-192.168.56.10 jjakupi.42.fr
-Website URL
+127.0.0.1 jjakupi.42.fr
 
-🔗 Main website: https://jjakupi.42.fr
+Then open:
 
-The TLS certificate is self-signed, so the browser may show a warning. This is expected for this local project.
-
-🔐 WordPress Administration
 Page	URL
-Admin panel	https://jjakupi.42.fr/wp-admin
+Website	https://jjakupi.42.fr
+WordPress admin	https://jjakupi.42.fr/wp-admin
 
-Use the WordPress administrator credentials defined in the environment file.
+The certificate is self-signed, so the browser may show a warning. This is normal for this project.
 
-🔑 Credentials
+Credentials
 
 Credentials are stored in:
 
 srcs/.env
 
-Credential type	Used for
-Domain name	Website URL
-MariaDB database name	WordPress database
-MariaDB username/password	Database connection
-WordPress admin credentials	Admin login
-WordPress regular user credentials	Second WordPress user
+This file contains the MariaDB credentials, the WordPress administrator credentials, the second WordPress user credentials, and the domain name.
 
-⚠️ Sensitive values should stay local and should not be committed to the repository.
+To change credentials, edit the .env file and restart the project:
 
-✅ Checking the Services
-Running containers
+make down
+make
+
+Sensitive values should stay local and should not be committed to Git.
+
+Checking the services
+
+To check that the project is running:
+
 docker ps
 
-Expected containers:
+You should see these containers:
 
-Container	Purpose
-nginx	HTTPS entry point
-wordpress	Website and PHP-FPM
-mariadb	Database
+Container
+nginx
+wordpress
+mariadb
+
+If all three containers are running, the stack is started correctly.
