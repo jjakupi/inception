@@ -24,6 +24,91 @@ The services communicate through a dedicated Docker network, and persistent data
 
 ---
 
+## Instructions
+
+Before running the project, the machine needs Docker, Docker Compose, Make and Git.
+
+The project is managed with the `Makefile` at the root of the repository.
+
+| Action | Command |
+|---|---|
+| Build and start the project | `make` |
+| Stop the project | `make down` |
+| Clean basic Docker resources | `make clean` |
+| Full cleanup/reset | `make fclean` |
+| Rebuild from scratch | `make re` |
+
+The project domain must point to the local machine or VM.
+
+Add this line to `/etc/hosts` on the machine where the browser is used:
+
+```text
+127.0.0.1 jjakupi.42.fr
+```
+
+If Docker runs inside a VM, replace `127.0.0.1` with the VM IP address.
+
+Website:
+
+```text
+https://jjakupi.42.fr
+```
+
+WordPress administration panel:
+
+```text
+https://jjakupi.42.fr/wp-admin
+```
+
+The TLS certificate is self-signed, so the browser may show a security warning. This is expected for this local project.
+
+For more detailed usage and setup information, see:
+
+| File | Purpose |
+|---|---|
+| `USER_DOC.md` | User/admin instructions. |
+| `DEV_DOC.md` | Developer setup, commands, volumes and persistence. |
+
+---
+
+## Resources
+
+### Official documentation
+
+- Docker documentation: `<link>`
+- Docker Compose documentation: `<link>`
+- Dockerfile reference: `<link>`
+- NGINX documentation: `<link>`
+- NGINX HTTPS / SSL configuration: `<link>`
+- MariaDB documentation: `<link>`
+- WordPress documentation: `<link>`
+- WP-CLI documentation: `<link>`
+- OpenSSL documentation: `<link>`
+
+### Additional references
+
+- Docker basics article or tutorial: `<link>`
+- Docker Compose tutorial: `<link>`
+- NGINX and PHP-FPM tutorial: `<link>`
+- TLS certificates tutorial: `<link>`
+
+### Use of AI
+
+AI was used as a learning and support tool during the project.
+
+It helped with:
+
+- understanding Docker concepts such as images, containers, volumes and networks;
+- understanding Dockerfile instructions such as `FROM`, `RUN`, `COPY`, `CMD` and `ENTRYPOINT`;
+- explaining how MariaDB, WordPress, PHP-FPM and NGINX communicate together;
+- debugging build and runtime errors;
+- understanding TLS, HTTPS, OpenSSL certificates and private keys;
+- improving documentation structure and wording.
+
+AI was not used as a replacement for testing or understanding the project. Each part was tested, modified and verified manually.
+
+---
+
 ## Project description
 
 This project uses Docker to build a small web infrastructure composed of three separate services: NGINX, WordPress and MariaDB.
@@ -105,189 +190,6 @@ This project uses Docker named volumes for persistent storage, with host paths c
 | WordPress files | `/var/www/html` | `/home/jjakupi/data/wordpress` |
 
 This allows the data to remain available even after containers are stopped or recreated.
-
----
-
-## Instructions
-
-### Prerequisites
-
-Before running the project, the machine needs:
-
-- Docker
-- Docker Compose
-- Make
-- Git
-
-The project domain must point to the local machine or VM.
-
-Add this line to `/etc/hosts` on the machine where the browser is used:
-
-```text
-127.0.0.1 jjakupi.42.fr
-```
-
-If Docker runs inside a VM, replace `127.0.0.1` with the VM IP address.
-
----
-
-### Build and start
-
-From the root of the repository, run:
-
-```bash
-make
-```
-
-This builds the Docker images and starts the containers.
-
----
-
-### Stop the project
-
-```bash
-make down
-```
-
-This stops and removes the containers while keeping persistent data.
-
----
-
-### Clean
-
-```bash
-make clean
-```
-
-This cleans basic Docker resources, depending on the Makefile rules.
-
----
-
-### Full reset
-
-```bash
-make fclean
-```
-
-Use this carefully, because it may remove images, volumes and persistent data.
-
----
-
-### Rebuild
-
-```bash
-make re
-```
-
-This performs a full cleanup and starts the project again.
-
----
-
-## Access
-
-Website:
-
-```text
-https://jjakupi.42.fr
-```
-
-WordPress administration panel:
-
-```text
-https://jjakupi.42.fr/wp-admin
-```
-
-The TLS certificate is self-signed, so the browser may show a security warning. This is expected for this local project.
-
----
-
-## Useful commands
-
-Check running containers:
-
-```bash
-docker ps
-```
-
-Check logs:
-
-```bash
-docker logs nginx
-docker logs wordpress
-docker logs mariadb
-```
-
-Check NGINX configuration:
-
-```bash
-docker exec -it nginx nginx -t
-```
-
-Check WordPress users:
-
-```bash
-docker exec -it wordpress bash
-cd /var/www/html
-wp user list --allow-root
-```
-
-Check volumes:
-
-```bash
-docker volume ls
-```
-
----
-
-## Documentation
-
-More detailed documentation is available in:
-
-| File | Purpose |
-|---|---|
-| `USER_DOC.md` | Explains how to use the project as a user or administrator. |
-| `DEV_DOC.md` | Explains how to set up, build, debug and understand the project as a developer. |
-
----
-
-## Resources
-
-### Official documentation
-
-- Docker documentation: `<link>`
-- Docker Compose documentation: `<link>`
-- Dockerfile reference: `<link>`
-- NGINX documentation: `<link>`
-- NGINX HTTPS / SSL configuration: `<link>`
-- MariaDB documentation: `<link>`
-- WordPress documentation: `<link>`
-- WP-CLI documentation: `<link>`
-- OpenSSL documentation: `<link>`
-
-### Additional references
-
-- Docker basics article or tutorial: `<link>`
-- Docker Compose tutorial: `<link>`
-- NGINX and PHP-FPM tutorial: `<link>`
-- TLS certificates tutorial: `<link>`
-
-### Use of AI
-
-AI was used as a learning and support tool during the project.
-
-It helped with:
-
-- understanding Docker concepts such as images, containers, volumes and networks;
-- understanding Dockerfile instructions such as `FROM`, `RUN`, `COPY`, `CMD` and `ENTRYPOINT`;
-- explaining how MariaDB, WordPress, PHP-FPM and NGINX communicate together;
-- debugging build and runtime errors;
-- understanding TLS, HTTPS, OpenSSL certificates and private keys;
-- improving documentation structure and wording.
-
-AI was not used as a replacement for testing or understanding the project. Each part was tested, modified and verified manually.
-
-
-
 
 
 https://developer.wordpress.org/cli/commands/ ---- used for the command of wordpress
