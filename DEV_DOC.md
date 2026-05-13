@@ -54,9 +54,11 @@ Before starting the project, make sure the persistent data path matches the user
 For this repository, the expected path is: `/home/jjakupi/data`
 
 
-If the project is tested with another login, replace `jjakupi` with the correct login in the `Makefile` and in `srcs/docker-compose.yml`.
+If the project is used with another login, replace jjakupi with the correct login in:
 
-The required folders are normally created by the `Makefile` when running: `make` make sure to change  with the correct `login` instead of `jjakupi`.
+- Makefile
+- srcs/docker-compose.yml
+- domain configuration, if needed
 
 If they need to be created manually, use:
 
