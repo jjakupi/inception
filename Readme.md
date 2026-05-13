@@ -78,7 +78,7 @@ For more detailed usage and setup information, see:
 - Docker documentation https://docs.docker.com/
 
 - **WP-CLI Handbook** — https://developer.wordpress.org/cli/handbook
-  Used to understand what WP-CLI is and how it can be used to manage WordPress from the command line.
+Used to understand what WP-CLI is and how it can be used to manage WordPress from the command line.
 
 - **WP-CLI Commands Reference** — https://developer.wordpress.org/cli/commands
   Used to check the syntax of commands such as `wp config create`, `wp core install`, and `wp user create`.
@@ -159,7 +159,7 @@ In this project, configuration values are provided through the `.env` file. Real
 Host network mode can be useful in some cases, but it reduces isolation and can create security or port conflict issues.
 In this project, a Docker bridge network is used instead of host network mode. This keeps WordPress and MariaDB internal, while only NGINX is exposed to the host on port `443`.
 
--A Docker bridge network is a private virtual network created by Docker. It allows containers connected to the same network to communicate with each other while staying isolated from other networks and from the host, unless ports are explicitly published.
+- A Docker bridge network is a private virtual network created by Docker. It allows containers connected to the same network to communicate with each other while staying isolated from other networks and from the host, unless ports are explicitly published.
 
 -Inside this network, containers can reach each other by service name, for example `nginx` can reach `wordpress:9000`, and `wordpress` can reach `mariadb:3306`.
 
@@ -167,11 +167,12 @@ In this project, a Docker bridge network is used instead of host network mode. T
 
 ### Docker Volumes vs Bind Mounts
 
-- Docker volumes are managed by Docker and are used to keep data persistent even when containers are removed. A named volume can be attached to a container path, such as `/var/lib/mysql` for MariaDB or `/var/www/html` for WordPress.
+- A bind mount directly mounts a file or directory from the host machine into a container. The service uses the host path directly, for example `/home/jjakupi/data/mariadb:/var/lib/mysql`. Changes made inside the container are reflected on the host path, and changes made on the host are reflected inside the container.
 
-- Bind mounts directly link a specific file or directory from the host machine into a container. They are useful in some cases, but they depend more directly on the host filesystem and are not allowed by the subject for the mandatory persistent storages.
+- Docker volume:
+A named volume is a Docker-managed storage object referenced by name. The container mounts the volume using its name, for example `mariadb_data:/var/lib/mysql`, instead of directly using a host path in the service definition. Named volumes are useful for persistent data because they can be managed with Docker commands and reused by containers.
 
--In this project, Docker named volumes are used for the MariaDB and WordPress data. The volumes are configured to store their data under the required host paths:
+In this project, named volumes are used for MariaDB and WordPress data. They are configured with `driver_opts` so their data is stored under `/home/jjakupi/data`, as required by the subject.
 
 | Volume | Container path | Host path |
 |---|---|---|
