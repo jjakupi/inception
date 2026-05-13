@@ -45,20 +45,11 @@ Add this line to `/etc/hosts` on the machine where the browser is used:
 ```text
 127.0.0.1 jjakupi.42.fr
 ```
-
 If Docker runs inside a VM, replace `127.0.0.1` with the VM IP address.
 
-Website:
+Website: `https://jjakupi.42.fr`
 
-```text
-https://jjakupi.42.fr
-```
-
-WordPress administration panel:
-
-```text
-https://jjakupi.42.fr/wp-admin
-```
+WordPress administration panel: `https://jjakupi.42.fr/wp-admin`
 
 The TLS certificate is self-signed, so the browser may show a security warning. This is expected for this local project.
 
