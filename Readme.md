@@ -75,34 +75,30 @@ For more detailed usage and setup information, see:
 
 ### Official documentation
 
-- Docker documentation: `<link>`
-- Docker Compose documentation: `<link>`
-- Dockerfile reference: `<link>`
-- NGINX documentation: `<link>`
-- NGINX HTTPS / SSL configuration: `<link>`
-- MariaDB documentation: `<link>`
-- WordPress documentation: `<link>`
-- WP-CLI documentation: `<link>`
-- OpenSSL documentation: `<link>`
+- Docker documentation https://docs.docker.com/
+
+- **WP-CLI Handbook** — `<https://developer.wordpress.org/cli/handbook/>`
+  Used to understand what WP-CLI is and how it can be used to manage WordPress from the command line.
+
+- **WP-CLI Commands Reference** — `<https://developer.wordpress.org/cli/commands/>`
+  Used to check the syntax of commands such as `wp config create`, `wp core install`, and `wp user create`.
+
+- NGINX documentation: https://docs.nginx.com/nginx/admin-guide/security-controls/terminating-ssl-http/
+
+
 
 ### Additional references
 
-- Docker basics article or tutorial: `<link>`
+-- **OpenSSL certificate generation tutorial** — `https://www.youtube.com/watch?v=wzbf9ldvBjM`
+ 	 Helped me understand how to create the `.key` and `.crt` files used by NGINX for TLS.
+- Docker networking tutorial: `<link>`
 - Docker Compose tutorial: `<link>`
-- NGINX and PHP-FPM tutorial: `<link>`
-- TLS certificates tutorial: `<link>`
-
 ### Use of AI
 
 AI was used as a learning and support tool during the project.
 
 It helped with:
-
-- understanding Docker concepts such as images, containers, volumes and networks;
-- understanding Dockerfile instructions such as `FROM`, `RUN`, `COPY`, `CMD` and `ENTRYPOINT`;
-- explaining how MariaDB, WordPress, PHP-FPM and NGINX communicate together;
 - debugging build and runtime errors;
-- understanding TLS, HTTPS, OpenSSL certificates and private keys;
 - improving documentation structure and wording.
 
 AI was not used as a replacement for testing or understanding the project. Each part was tested, modified and verified manually.
