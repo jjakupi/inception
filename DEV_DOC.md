@@ -47,26 +47,32 @@ Clone the repository:
 ```bash
 git clone <repository_url>
 cd Inception
-```
 
-Before starting the project, make sure the persistent data path matches the user running the project.
+This repository is configured for the login jjakupi.
 
-For this repository, the expected path is: `/home/jjakupi/data`
+The persistent data is stored under:
 
+/home/jjakupi/data
 
-If the project is tested with another login, replace `jjakupi` with the correct login in the `Makefile` and in `srcs/docker-compose.yml`.
+If the project is used with another login, replace jjakupi with the correct login in:
 
-The required folders are normally created by the `Makefile` when running: `make`
+Makefile
+srcs/docker-compose.yml
+domain configuration, if needed
 
-If they need to be created manually, use:
+The required folders are normally created automatically by the Makefile when running:
 
-```bash
+make
+
+If the folders need to be created manually, use:
+
 sudo mkdir -p /home/jjakupi/data/mariadb
 sudo mkdir -p /home/jjakupi/data/wordpress
 sudo chown -R $USER:$USER /home/jjakupi/data
-```
 
-Add the project domain to `/etc/hosts` on the machine where the browser is used: `127.0.0.1 jjakupi.42.fr`
+The project domain must also be added to /etc/hosts on the machine where the browser is used:
+
+127.0.0.1 jjakupi.42.fr
 
 If the project runs inside a virtual machine, use the VM IP address instead of `127.0.0.1`.
 
