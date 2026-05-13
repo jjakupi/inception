@@ -77,10 +77,10 @@ For more detailed usage and setup information, see:
 
 - Docker documentation https://docs.docker.com/
 
-- **WP-CLI Handbook** — `<https://developer.wordpress.org/cli/handbook/>`
+- **WP-CLI Handbook** — https://developer.wordpress.org/cli/handbook
   Used to understand what WP-CLI is and how it can be used to manage WordPress from the command line.
 
-- **WP-CLI Commands Reference** — `<https://developer.wordpress.org/cli/commands/>`
+- **WP-CLI Commands Reference** — https://developer.wordpress.org/cli/commands
   Used to check the syntax of commands such as `wp config create`, `wp core install`, and `wp user create`.
 
 - NGINX documentation: https://docs.nginx.com/nginx/admin-guide/security-controls/terminating-ssl-http/
@@ -89,9 +89,9 @@ For more detailed usage and setup information, see:
 
 ### Additional references
 
--- **OpenSSL certificate generation tutorial** — `https://www.youtube.com/watch?v=wzbf9ldvBjM`
+- OpenSSL certificate generation tutorial https://www.youtube.com/watch?v=wzbf9ldvBjM
  	 Helped me understand how to create the `.key` and `.crt` files used by NGINX for TLS.
-- Docker networking tutorial: `<link>`
+- Docker networking tutorial: https://www.youtube.com/watch?v=bKFMS5C4CG0&t=15s
 - Docker Compose tutorial: `<link>`
 ### Use of AI
 
@@ -137,19 +137,17 @@ Persistent data is stored with Docker named volumes. MariaDB data is stored in `
 
 ### Virtual Machines vs Docker
 
-A virtual machine runs a complete operating system with its own kernel. It is powerful, but heavier because each VM needs its own full system.
+- Virtual machines emulate a complete machine, including virtual hardware such as CPU, memory, storage and network interfaces. Each VM runs its own operating system with its own kernel, which makes VMs strongly isolated but heavier in terms of resources.
 
-Docker containers share the host kernel and isolate only the application environment. They are lighter, faster to start and easier to rebuild.
-
-For this project, Docker is used because each service can run in a separate and reproducible environment without needing a full virtual machine for each service.
+- Docker provides lightweight, portable and reproducible environments for running applications. Unlike virtual machines, containers do not run a full operating system with their own kernel. Instead, they share the host system’s kernel and include only the dependencies needed by the application.
 
 ---
 
 ### Secrets vs Environment Variables
 
-Environment variables are used to pass configuration values to the containers, such as database names, users and passwords.
+- Environment variables are used to pass configuration values to the containers, such as database names, users and passwords.
 
-Secrets are better for sensitive data in production, because they are designed to handle confidential values more securely.
+- Secrets are better for sensitive data in production, because they are designed to handle confidential values more securely.
 
 In this project, configuration values are provided through the `.env` file. Real passwords should stay local and should not be committed to Git.
 
@@ -157,36 +155,27 @@ In this project, configuration values are provided through the `.env` file. Real
 
 ### Docker Network vs Host Network
 
-A Docker network allows containers to communicate with each other using service names.
+- Host network mode is different. When a container uses the host network, it shares the network stack of the Docker host. This means the container does not get its own isolated network interface, and services running inside the container can use the host ports directly.
+Host network mode can be useful in some cases, but it reduces isolation and can create security or port conflict issues.
+In this project, a Docker bridge network is used instead of host network mode. This keeps WordPress and MariaDB internal, while only NGINX is exposed to the host on port `443`.
 
-For example:
+-A Docker bridge network is a private virtual network created by Docker. It allows containers connected to the same network to communicate with each other while staying isolated from other networks and from the host, unless ports are explicitly published.
 
-> NGINX → `wordpress:9000`
-> WordPress → `mariadb:3306`
-
-This keeps internal services isolated from the host machine.
-
-Using the host network would make containers share the host network directly, which removes part of the isolation.
-
-For this project, a dedicated Docker network is used. Only NGINX is exposed to the host, while WordPress and MariaDB remain internal.
+-Inside this network, containers can reach each other by service name, for example `nginx` can reach `wordpress:9000`, and `wordpress` can reach `mariadb:3306`.
 
 ---
 
 ### Docker Volumes vs Bind Mounts
 
-Docker volumes are managed by Docker and are commonly used to persist container data.
+- Docker volumes are managed by Docker and are used to keep data persistent even when containers are removed. A named volume can be attached to a container path, such as `/var/lib/mysql` for MariaDB or `/var/www/html` for WordPress.
 
-Bind mounts directly link a specific host path to a container path.
+- Bind mounts directly link a specific file or directory from the host machine into a container. They are useful in some cases, but they depend more directly on the host filesystem and are not allowed by the subject for the mandatory persistent storages.
 
-This project uses Docker named volumes for persistent storage, with host paths configured for the required data directories:
+-In this project, Docker named volumes are used for the MariaDB and WordPress data. The volumes are configured to store their data under the required host paths:
 
-| Data | Container path | Host path |
+| Volume | Container path | Host path |
 |---|---|---|
-| MariaDB data | `/var/lib/mysql` | `/home/jjakupi/data/mariadb` |
-| WordPress files | `/var/www/html` | `/home/jjakupi/data/wordpress` |
+| `mariadb_data` | `/var/lib/mysql` | `/home/jjakupi/data/mariadb` |
+| `wordpress_data` | `/var/www/html` | `/home/jjakupi/data/wordpress` |
 
-This allows the data to remain available even after containers are stopped or recreated.
-
-
-https://developer.wordpress.org/cli/commands/ ---- used for the command of wordpress
-https://depot.dev/blog/docker-build-image explained
+This allows the data to remain available after stopping or recreating the containers.
