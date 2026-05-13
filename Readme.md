@@ -66,7 +66,7 @@ For more detailed usage and setup information, see:
 
 ### Official documentation
 
--[**Official Docker Documentation**](https://docs.docker.com/)
+- [**Official Docker Documentation**](https://docs.docker.com/)
 
 - [**WP-CLI Handbook**](https://developer.wordpress.org/cli/handbook/)
 Used to understand what WP-CLI is and how it can be used to manage WordPress from the command line.
