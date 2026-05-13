@@ -49,18 +49,24 @@ git clone <repository_url>
 cd Inception
 ```
 
-Create the required data folders on the host machine:
+Before starting the project, make sure the persistent data path matches the user running the project.
+
+For this repository, the expected path is: `/home/jjakupi/data`
+
+
+If the project is tested with another login, replace `jjakupi` with the correct login in the `Makefile` and in `srcs/docker-compose.yml`.
+
+The required folders are normally created by the `Makefile` when running: `make`
+
+If they need to be created manually, use:
 
 ```bash
-mkdir -p /home/jjakupi/data/mariadb
-mkdir -p /home/jjakupi/data/wordpress
+sudo mkdir -p /home/jjakupi/data/mariadb
+sudo mkdir -p /home/jjakupi/data/wordpress
+sudo chown -R $USER:$USER /home/jjakupi/data
 ```
 
-Add the project domain to `/etc/hosts` on the machine where the browser is used:
-
-```text
-127.0.0.1 jjakupi.42.fr
-```
+Add the project domain to `/etc/hosts` on the machine where the browser is used: `127.0.0.1 jjakupi.42.fr`
 
 If the project runs inside a virtual machine, use the VM IP address instead of `127.0.0.1`.
 
@@ -68,32 +74,36 @@ If the project runs inside a virtual machine, use the VM IP address instead of `
 
 ## Configuration and secrets
 
-The project uses an environment file:
+The project needs an environment file at: `srcs/.env`
 
-> `srcs/.env`
+This file is not committed to Git because it can contain passwords.
 
-This file contains the values used by the services:
+To create it, make a new file: `srcs/.env`
 
-| Value | Used for |
-|---|---|
-| Domain name | Website URL |
-| MariaDB database name | WordPress database |
-| MariaDB username/password | Database connection |
-| WordPress administrator credentials | Admin account |
-| WordPress regular user credentials | Second WordPress user |
+Then add the required variables:
 
-The real `.env` file should stay local and should not be committed to Git.
+```env
+DOMAIN_NAME=https://jjakupi.42.fr
 
-A common setup is to provide an example file:
+MYSQL_DATABASE=wordpress
+MYSQL_USER=wp_user
+MYSQL_PASSWORD=<database_password>
+MYSQL_ROOT_PASSWORD=<root_database_password>
 
-> `srcs/.env.example`
+WORDPRESS_TITLE=Inception
+WORDPRESS_ADMIN_USER=<admin_username>
+WORDPRESS_ADMIN_PASSWORD=<admin_password>
+WORDPRESS_ADMIN_EMAIL=<admin_email>
 
-Then create the real environment file locally:
-
-```bash
-cp srcs/.env.example srcs/.env
-nano srcs/.env
+WORDPRESS_USER=<regular_username>
+WORDPRESS_USER_PASSWORD=<regular_user_password>
+WORDPRESS_USER_EMAIL=<regular_user_email>
 ```
+
+Replace the values between `< >` with local values before running the project.
+
+The WordPress administrator username should not contain `admin` or `administrator`.
+
 
 ---
 

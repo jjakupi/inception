@@ -17,3 +17,32 @@ CMD ["mysqld"]:“When container starts → run the database server”
 If MariaDB uses 127.0.0.1
 This means:listen only inside the same container
 bind-address = 0.0.0.0->listen on all network interfaces inside the container
+
+Yes — I mean inside the MariaDB container.
+
+Even if the container is mainly for MariaDB, it can still contain several programs/tools installed from the MariaDB package.
+
+For example inside the MariaDB container you can have:
+
+mysqld / mariadbd     = the MariaDB server daemon
+mysql                 = command-line client
+mysqladmin            = admin/check tool
+mysql_install_db      = initialization tool
+mysqld_safe           = helper script to start MariaDB safely
+
+So when I say “programs inside the same container”, I mean things like:
+
+mysql client → talks to → mariadbd server
+
+Both can be inside the same MariaDB container.
+
+Example:
+
+docker exec -it mariadb bash
+mysql -u root -p
+
+Here you are inside the MariaDB container. The mysql client may connect to the MariaDB server through:
+
+/run/mysqld/mysqld.sock
+
+because both are local, inside the same container.
