@@ -66,16 +66,15 @@ For more detailed usage and setup information, see:
 
 ### Official documentation
 
-[Official Docker Documentation](https://docs.docker.com/)
-- Docker documentation https://docs.docker.com/
+-[**Official Docker Documentation**](https://docs.docker.com/)
 
 - [**WP-CLI Handbook**](https://developer.wordpress.org/cli/handbook/)
 Used to understand what WP-CLI is and how it can be used to manage WordPress from the command line.
 
-- **WP-CLI Commands Reference** — https://developer.wordpress.org/cli/commands
+- [**WP-CLI Commands Reference**](https://developer.wordpress.org/cli/commands/)
   Used to check the syntax of commands such as `wp config create`, `wp core install`, and `wp user create`.
 
-- NGINX documentation: https://docs.nginx.com/nginx/admin-guide/security-controls/terminating-ssl-http/
+- [**NGINX documentation**](https://docs.nginx.com/nginx/admin-guide/security-controls/terminating-ssl-http/)
 
 
 
@@ -129,17 +128,17 @@ Persistent data is stored with Docker named volumes. MariaDB data is stored in `
 
 ### Virtual Machines vs Docker
 
-- ** Virtual machines ** emulate a complete machine, including virtual hardware such as CPU, memory, storage and network interfaces. Each VM runs its own operating system with its own kernel, which makes VMs strongly isolated but heavier in terms of resources.
+- **Virtual machines** emulate a complete machine, including virtual hardware such as CPU, memory, storage and network interfaces. Each VM runs its own operating system with its own kernel, which makes VMs strongly isolated but heavier in terms of resources.
 
-- ** Docker ** provides lightweight, portable and reproducible environments for running applications. Unlike virtual machines, containers do not run a full operating system with their own kernel. Instead, they share the host system’s kernel and include only the dependencies needed by the application.
+- **Docker** provides lightweight, portable and reproducible environments for running applications. Unlike virtual machines, containers do not run a full operating system with their own kernel. Instead, they share the host system’s kernel and include only the dependencies needed by the application.
 
 ---
 
 ### Secrets vs Environment Variables
 
-- **Environment variables ** are used to pass configuration values to the containers, such as database names, users and passwords.
+- **Environment variables** are used to pass configuration values to the containers, such as database names, users and passwords.
 
-- ** Secrets ** are better for sensitive data in production, because they are designed to handle confidential values more securely.
+- **Secrets** are better for sensitive data in production, because they are designed to handle confidential values more securely.
 
 In this project, configuration values are provided through the `.env` file. Real passwords should stay local and should not be committed to Git.
 
@@ -147,11 +146,11 @@ In this project, configuration values are provided through the `.env` file. Real
 
 ### Docker Network vs Host Network
 
-- ** Host network ** mode is different. When a container uses the host network, it shares the network stack of the Docker host. This means the container does not get its own isolated network interface, and services running inside the container can use the host ports directly.
+- **Docker network** is a private virtual network created by Docker. It allows containers connected to the same network to communicate with each other while staying isolated from other networks and from the host, unless ports are explicitly published.
+
+- **Host network** mode is different. When a container uses the host network, it shares the network stack of the Docker host. This means the container does not get its own isolated network interface, and services running inside the container can use the host ports directly.
 Host network mode can be useful in some cases, but it reduces isolation and can create security or port conflict issues.
 In this project, a Docker bridge network is used instead of host network mode. This keeps WordPress and MariaDB internal, while only NGINX is exposed to the host on port `443`.
-
-- ** Docker network ** is a private virtual network created by Docker. It allows containers connected to the same network to communicate with each other while staying isolated from other networks and from the host, unless ports are explicitly published.
 
 -Inside this network, containers can reach each other by service name, for example `nginx` can reach `wordpress:9000`, and `wordpress` can reach `mariadb:3306`.
 
@@ -159,10 +158,10 @@ In this project, a Docker bridge network is used instead of host network mode. T
 
 ### Docker Volumes vs Bind Mounts
 
-- ** Bind mounts ** directly mounts a file or directory from the host machine into a container. The service uses the host path directly, for example `/home/jjakupi/data/mariadb:/var/lib/mysql`. Changes made inside the container are reflected on the host path, and changes made on the host are reflected inside the container.
+- **Docker volumes:** is a Docker-managed storage object referenced by name. The container mounts the volume using its name, for example `mariadb_data:/var/lib/mysql`, instead of directly using a host path in the service definition. Named volumes are useful for persistent data because they can be managed with Docker commands and reused by containers.
 
-- ** Docker volumes: **
-A named volume is a Docker-managed storage object referenced by name. The container mounts the volume using its name, for example `mariadb_data:/var/lib/mysql`, instead of directly using a host path in the service definition. Named volumes are useful for persistent data because they can be managed with Docker commands and reused by containers.
+- **Bind mounts** directly mounts a file or directory from the host machine into a container. The service uses the host path directly, for example `/home/jjakupi/data/mariadb:/var/lib/mysql`. Changes made inside the container are reflected on the host path, and changes made on the host are reflected inside the container.
+
 
 In this project, named volumes are used for MariaDB and WordPress data. They are configured with `driver_opts` so their data is stored under `/home/jjakupi/data`, as required by the subject.
 
