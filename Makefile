@@ -16,9 +16,9 @@ all: up
 
 up:
 	@echo "$(BLUE)Creating data directories...$(RESET)"
-	@sudo mkdir -p $(MARIADB_DATA)
-	@sudo mkdir -p $(WORDPRESS_DATA)
-	@sudo chown -R $(USER):$(USER) $(DATA_DIR)
+	mkdir -p $(MARIADB_DATA)
+	mkdir -p $(WORDPRESS_DATA)
+	
 	@echo "$(GREEN)Building and starting containers...$(RESET)"
 	@$(COMPOSE) up --build -d
 	@echo "$(GREEN)Inception is running.$(RESET)"
@@ -40,8 +40,8 @@ fclean:
 	@$(COMPOSE) down -v
 	@docker system prune -af
 	@docker volume prune -f
-	@sudo rm -rf $(MARIADB_DATA)
-	@sudo rm -rf $(WORDPRESS_DATA)
+	rm -rf $(MARIADB_DATA)
+	rm -rf $(WORDPRESS_DATA)
 	@echo "$(GREEN)Full clean done.$(RESET)"
 
 re: fclean all
