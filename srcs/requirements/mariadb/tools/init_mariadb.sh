@@ -28,10 +28,8 @@ mysql -u root -e "FLUSH PRIVILEGES;"
 
 echo "Setup done!"
 
-
 # Stop MariaDB
 mysqladmin -u root shutdown
 
 # Start MariaDB normally
 exec mysqld --user=mysql
-
