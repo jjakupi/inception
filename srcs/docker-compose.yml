@@ -38,7 +38,7 @@ services:
       - wordpress_data:/var/www/html
     networks:
       - inception
-      
+
 volumes:
   mariadb_data:
     driver_opts:

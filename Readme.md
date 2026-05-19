@@ -84,6 +84,7 @@ Used to understand what WP-CLI is and how it can be used to manage WordPress fro
  	 Helped me understand how to create the `.key` and `.crt` files used by NGINX for TLS.
 - Docker networking tutorial: https://www.youtube.com/watch?v=bKFMS5C4CG0&t=15s
 - Docker Compose tutorial: `<link>`
+
 ### Use of AI
 
 AI was used as a learning and support tool during the project.

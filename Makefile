@@ -42,6 +42,7 @@ fclean:
 	@docker volume prune -f
 	@sudo rm -rf $(MARIADB_DATA)
 	@sudo rm -rf $(WORDPRESS_DATA)
+	@sudo rm -rf /home/jjakupi/data
 	@echo "$(GREEN)Full clean done.$(RESET)"
 
 re: fclean all
