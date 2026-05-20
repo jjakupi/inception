@@ -58,18 +58,15 @@ Credentials are stored in:
 ```text
 srcs/.env
 ```
+The project needs an environment file at: `srcs/.env`
 
-This file contains:
+This file is not committed to Git because it can contain passwords.
 
-| Value | Description |
-|---|---|
-| `DOMAIN_NAME` | Website domain |
-| `MYSQL_DATABASE` | MariaDB database name |
-| `MYSQL_USER` / `MYSQL_PASSWORD` | MariaDB user credentials |
-| `WORDPRESS_ADMIN_USER` / `WORDPRESS_ADMIN_PASSWORD` | WordPress administrator credentials |
-| `WORDPRESS_USER` / `WORDPRESS_USER_PASSWORD` | Second WordPress user credentials |
+But it will be created the moment you `make` and copy the required variables from `srcs/.env.example` to `srcs/.env`.
 
-To change credentials, edit `srcs/.env`, then restart the project:
+Replace the values between `< >` with local values before running the project.
+
+The WordPress administrator username should not contain `admin` or `administrator`.
 
 ```bash
 make down
@@ -82,18 +79,9 @@ Sensitive values should stay local and should not be committed to Git.
 
 ## Checking the services
 
-To check that the project is running:
-
-```bash
-docker ps
-```
-
-You should see these containers:
-
-| Container | Service |
+| Command | Purpose |
 |---|---|
-| `nginx` | HTTPS entry point |
-| `wordpress` | WordPress and PHP-FPM |
-| `mariadb` | Database |
-
-If all three containers are running, the stack is started correctly.
+| `docker ps` | Show running containers. |
+| `docker images` | Show built images. |
+| `docker volume ls` | Show Docker volumes. |
+| `docker network ls` | Show Docker networks. |

@@ -20,23 +20,94 @@ Only **NGINX** is exposed to the host machine.
 
 ## Prerequisites
 
-Before running the project, the machine needs:
 
-| Tool | Purpose |
-|---|---|
-| **Docker** | Build images and run containers. |
-| **Docker Compose** | Start the multi-container stack. |
-| **Make** | Run the project commands. |
-| **Git** | Clone and manage the repository. |
+Before running the project, the machine needs Docker, Docker Compose, Make and Git.
 
-To check the tools:
+
+<details>
+<summary>Click here to see installation instructions</summary>
+
+### Install Git and Make
+
+```bash
+sudo apt update
+sudo apt install -y git make
+```
+
+Check installation:
+
+```bash
+git --version
+make --version
+```
+
+### Install Docker and Docker Compose
+
+```bash
+sudo apt update
+sudo apt install -y ca-certificates curl gnupg
+```
+
+```bash
+sudo install -m 0755 -d /etc/apt/keyrings
+```
+
+```bash
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | \
+sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+```
+
+```bash
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+```
+
+```bash
+echo \
+"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+https://download.docker.com/linux/ubuntu \
+$(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
+
+```bash
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+Check installation:
 
 ```bash
 docker --version
 docker compose version
-make --version
-git --version
 ```
+
+Test Docker:
+
+```bash
+sudo docker run hello-world
+```
+
+### Run Docker without sudo
+
+```bash
+sudo groupadd docker
+sudo usermod -aG docker $USER
+```
+
+Then log out and log back in, or run:
+
+```bash
+newgrp docker
+```
+
+Test again:
+
+```bash
+docker run hello-world
+```
+
+</details>
+
 
 ---
 
@@ -56,17 +127,10 @@ For this repository, the expected path is: `/home/jjakupi/data`
 
 If the project is used with another login, replace jjakupi with the correct login in:
 
-- Makefile
+- Makefile - already creats the folders so make sure to change the `<login>`
 - srcs/docker-compose.yml
 - domain configuration, if needed
 
-If they need to be created manually, use:
-
-```bash
-sudo mkdir -p /home/jjakupi/data/mariadb
-sudo mkdir -p /home/jjakupi/data/wordpress
-sudo chown -R $USER:$USER /home/jjakupi/data
-```
 
 Add the project domain to `/etc/hosts` on the machine where the browser is used: `127.0.0.1 jjakupi.42.fr`
 
@@ -80,27 +144,7 @@ The project needs an environment file at: `srcs/.env`
 
 This file is not committed to Git because it can contain passwords.
 
-To create it, make a new file: `srcs/.env`
-
-Then add the required variables:
-
-```env
-DOMAIN_NAME=https://jjakupi.42.fr
-
-MYSQL_DATABASE=wordpress
-MYSQL_USER=wp_user
-MYSQL_PASSWORD=<database_password>
-MYSQL_ROOT_PASSWORD=<root_database_password>
-
-WORDPRESS_TITLE=Inception
-WORDPRESS_ADMIN_USER=<admin_username>
-WORDPRESS_ADMIN_PASSWORD=<admin_password>
-WORDPRESS_ADMIN_EMAIL=<admin_email>
-
-WORDPRESS_USER=<regular_username>
-WORDPRESS_USER_PASSWORD=<regular_user_password>
-WORDPRESS_USER_EMAIL=<regular_user_email>
-```
+But it will be created the moment you `make` and copy the required variables from `srcs/.env.example` to `srcs/.env`.
 
 Replace the values between `< >` with local values before running the project.
 
@@ -158,63 +202,129 @@ make down
 
 This stops and removes the containers, but keeps persistent data.
 
-| Command | Purpose |
+
+| Action | Command |
 |---|---|
-| `make` | Build and start the project. |
-| `make down` | Stop and remove containers. |
-| `make clean` | Clean basic Docker resources, depending on the Makefile. |
-| `make fclean` | Full cleanup/reset, depending on the Makefile. |
+| Build and start the project | `make` |
+| Stop the project | `make down` |
+| Clean basic Docker resources | `make clean` |
+| Full cleanup/reset | `make fclean` |
+| Rebuild from scratch | `make re` |
 
 ---
 
-## Docker Compose
+## Docker Compose commands
 
-Docker Compose is configured in:
+The project containers are managed with Docker Compose using the file:
 
-> `srcs/docker-compose.yml`
-
-It defines:
-
-- the three services: `nginx`, `wordpress`, `mariadb`
-- the Docker network
-- the named volumes
-- the `.env` file
-- the NGINX port mapping
-
-Only NGINX exposes a port to the host:
-
-```text
-443:443
+```bash
+srcs/docker-compose.yml
 ```
 
-WordPress and MariaDB stay inside the Docker network.
+### Build and start the containers
+
+```bash
+docker compose -f srcs/docker-compose.yml up --build -d
+```
+
+- `up` creates and starts the containers.
+- `--build` builds the images before starting them.
+- `-d` runs the containers in the background.
 
 ---
 
-## Useful commands
-
-| Command | Purpose |
-|---|---|
-| `docker ps` | Show running containers. |
-| `docker images` | Show built images. |
-| `docker volume ls` | Show Docker volumes. |
-| `docker network ls` | Show Docker networks. |
-
-Check logs:
+### Stop the containers
 
 ```bash
-docker logs nginx
-docker logs wordpress
-docker logs mariadb
+docker compose -f srcs/docker-compose.yml down
 ```
 
-Enter a container:
+Stops and removes the containers and the Docker network.
+
+This does not remove persistent volumes.
+
+---
+
+### Check container status
 
 ```bash
-docker exec -it nginx bash
-docker exec -it wordpress bash
-docker exec -it mariadb bash
+docker compose -f srcs/docker-compose.yml ps
 ```
+
+Shows the status of the project containers.
+
+---
+
+### View logs
+
+```bash
+docker compose -f srcs/docker-compose.yml logs
+```
+
+Shows logs from all services.
+
+
+To see logs for one service:
+
+```bash
+docker compose -f srcs/docker-compose.yml logs nginx
+docker compose -f srcs/docker-compose.yml logs wordpress
+docker compose -f srcs/docker-compose.yml logs mariadb
+```
+
+---
+
+### Restart containers
+
+```bash
+docker compose -f srcs/docker-compose.yml restart
+```
+
+Restarts all containers without rebuilding them.
+
+To restart one service:
+
+```bash
+docker compose -f srcs/docker-compose.yml restart nginx
+```
+
+---
+
+### Enter a container
+
+```bash
+docker compose -f srcs/docker-compose.yml exec nginx bash
+```
+
+Opens a shell inside a running container.
+
+Examples:
+
+```bash
+docker compose -f srcs/docker-compose.yml exec wordpress bash
+docker compose -f srcs/docker-compose.yml exec mariadb bash
+```
+---
+
+### Stops and removes the containers
+
+```bash
+docker compose -f srcs/docker-compose.yml down
+```
+
+This does not remove volumes, so persistent data is kept.
+
+---
+
+### Remove containers and volumes
+
+```bash
+docker compose -f srcs/docker-compose.yml down -v
+```
+
+Stops the containers and removes the Docker volumes.
+
+Warning: this can delete persistent project data, such as the database and WordPress files.
 
 ---
 

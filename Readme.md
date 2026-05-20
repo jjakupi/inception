@@ -28,6 +28,93 @@ The services communicate through a dedicated Docker network, and persistent data
 
 Before running the project, the machine needs Docker, Docker Compose, Make and Git.
 
+
+<details>
+<summary>Click here to see installation instructions</summary>
+
+### Install Git and Make
+
+```bash
+sudo apt update
+sudo apt install -y git make
+```
+
+Check installation:
+
+```bash
+git --version
+make --version
+```
+
+### Install Docker and Docker Compose
+
+```bash
+sudo apt update
+sudo apt install -y ca-certificates curl gnupg
+```
+
+```bash
+sudo install -m 0755 -d /etc/apt/keyrings
+```
+
+```bash
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | \
+sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+```
+
+```bash
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+```
+
+```bash
+echo \
+"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+https://download.docker.com/linux/ubuntu \
+$(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
+
+```bash
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+Check installation:
+
+```bash
+docker --version
+docker compose version
+```
+
+Test Docker:
+
+```bash
+sudo docker run hello-world
+```
+
+### Run Docker without sudo
+
+```bash
+sudo groupadd docker
+sudo usermod -aG docker $USER
+```
+
+Then log out and log back in, or run:
+
+```bash
+newgrp docker
+```
+
+Test again:
+
+```bash
+docker run hello-world
+```
+
+</details>
+
+---
+
 The project is managed with the `Makefile` at the root of the repository.
 
 | Action | Command |
@@ -80,10 +167,10 @@ Used to understand what WP-CLI is and how it can be used to manage WordPress fro
 
 ### Additional references
 
-- OpenSSL certificate generation tutorial https://www.youtube.com/watch?v=wzbf9ldvBjM
- 	 Helped me understand how to create the `.key` and `.crt` files used by NGINX for TLS.
+- OpenSSL certificate generation tutorial: https://www.youtube.com/watch?v=wzbf9ldvBjM \
+  -Helped me understand how to create the `.key` and `.crt` files used by NGINX for TLS.
 - Docker networking tutorial: https://www.youtube.com/watch?v=bKFMS5C4CG0&t=15s
-- Docker Compose tutorial: `<link>`
+- Docker Compose tutorial: https://www.youtube.com/watch?v=DM65_JyGxCo
 
 ### Use of AI
 
