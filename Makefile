@@ -5,8 +5,6 @@ COMPOSE = docker compose -f srcs/docker-compose.yml
 DATA_DIR = /home/jjakupi/data
 MARIADB_DATA = $(DATA_DIR)/mariadb
 WORDPRESS_DATA = $(DATA_DIR)/wordpress
-ENV_FILE = srcs/.env
-ENV_EXAMPLE = srcs/.env.example
 
 GREEN = \033[0;32m
 YELLOW = \033[0;33m
@@ -14,15 +12,7 @@ BLUE = \033[0;34m
 RED = \033[0;31m
 RESET = \033[0m
 
-all: env up
-
-env:
-	@if [ ! -f srcs/.env ]; then \
-		cp srcs/.env.example srcs/.env; \
-		echo "Created srcs/.env from srcs/.env.example"; \
-	else \
-		echo "srcs/.env already exists"; \
-	fi
+all: up
 
 up:
 	@echo "$(BLUE)Creating data directories...$(RESET)"
@@ -56,5 +46,11 @@ fclean:
 	@echo "$(GREEN)Full clean done.$(RESET)"
 
 re: fclean all
+
+status:
+	@$(COMPOSE) ps
+
+logs:
+	@$(COMPOSE) logs
 
 .PHONY: all up down clean fclean re status logs
